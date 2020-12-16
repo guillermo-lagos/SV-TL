@@ -1,0 +1,3 @@
+include ':svtl'
+include ':app'
+rootProject.name = "SV TL"
