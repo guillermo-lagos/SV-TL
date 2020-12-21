@@ -33,15 +33,15 @@ object TLServer : Runnable {
             serverSocket = ServerSocket(port)
             while (isRunning) {
                 val socket = serverSocket?.accept() ?: throw Error()
-                Log.e(TAG,"request handled start")
+                /*Log.e(TAG,"request handled start")*/
                 handle(socket)
                 socket.close()
-                Log.e(TAG,"request handled in while")
+               /* Log.e(TAG,"request handled in while")*/
             }
         } catch (e: Exception) {
             Log.e(TAG,e.localizedMessage)
         } finally {
-            Log.e(TAG,"request handled")
+           /* Log.e(TAG,"request handled")*/
         }
     }
 

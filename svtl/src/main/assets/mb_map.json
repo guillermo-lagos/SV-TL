@@ -8,7 +8,7 @@
     "openmaptiles": {
       "type": "vector",
       "tiles": [
-        "http://localhost:8888/your-mb-id/{z}/{x}/{y}.pbf"
+        "http://localhost:8888/chile/{z}/{x}/{y}.pbf"
       ]
     }
   },

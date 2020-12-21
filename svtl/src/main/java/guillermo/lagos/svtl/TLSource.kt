@@ -1,14 +1,16 @@
 package guillermo.lagos.svtl
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.util.Log
+import kotlinx.coroutines.*
 import org.jetbrains.anko.db.MapRowParser
 import org.jetbrains.anko.db.select
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
+import java.io.*
+import java.util.zip.ZipEntry
+import java.util.zip.ZipInputStream
 
 
 sealed class TLError : Error() {
@@ -28,24 +30,13 @@ class TLSource(context: Context, filePath: String, db_name: String, id: String? 
 
     var id = id ?: filePath.substringAfterLast("/").substringBefore(".")
     val url get() = "http://localhost:${TLServer.port}/$id/{z}/{x}/{y}.$format"
-    private val db: SQLiteDatabase = try {
-        Log.e(TLServer.TAG,"NOMBRE DB: $filePath")
-        context.openDatabase(db_name)
-    } catch (e: RuntimeException) {
-        throw TLError.CantReadFile()
-    }
+
+    private val db: SQLiteDatabase = context.openDatabase(db_name)
 
     var isVector = false
     var format = String()
-//    var tileSize: Int? = null
-//    var layersJson: String? = ""
-//    var attributions: String? = ""
-//    var minZoom: Float? = null
-//    var maxZoom: Float? = null
-//    var bounds: LatLngBounds? = null
 
     init {
-
         try {
             format = db.select("metadata")
                     .whereSimple("name = ?", "format")
@@ -65,7 +56,7 @@ class TLSource(context: Context, filePath: String, db_name: String, id: String? 
     fun getTile(z: Int, x: Int, y: Int): ByteArray? {
         return db.select("tiles")
                 .whereArgs("(zoom_level = {z}) and (tile_column = {x}) and (tile_row = {y})",
-                        "z" to z, "x" to x, "y" to y)
+                    "z" to z, "x" to x, "y" to y)
                 .parseList(toTL)
                 .run { if (!isEmpty()) get(0) else null }
     }
@@ -90,37 +81,14 @@ class TLSource(context: Context, filePath: String, db_name: String, id: String? 
     }
 
 
-    @Throws(RuntimeException::class)
+    /*@Throws(RuntimeException::class)*/
     fun Context.openDatabase(db_name: String): SQLiteDatabase {
         val dbFile = getDatabasePath(db_name)
-        if (!dbFile.exists()) {
-            try {
-                openOrCreateDatabase(db_name, Context.MODE_PRIVATE,null)?.apply {
-                    close()
-                }
-                copyDatabase(dbFile, db_name)
-            } catch (e: IOException) {
-                throw RuntimeException("Error creating source database", e)
-            }
-
-        }
         return SQLiteDatabase.openDatabase(dbFile.path, null, SQLiteDatabase.OPEN_READONLY)
     }
 
-    @SuppressLint("WrongConstant")
-    private fun Context.copyDatabase(dbFile: File,db_name: String) {
-        val `is` = assets.open(db_name)
-        val os = FileOutputStream(dbFile)
 
-        val buffer = ByteArray(1024)
-        while (`is`.read(buffer) > 0) {
-            os.write(buffer)
-            Log.e(TLServer.TAG,"copy db....")
-        }
 
-        os.flush()
-        os.close()
-        `is`.close()
-        Log.e(TLServer.TAG, "finish db....")
-    }
+
+
 }
