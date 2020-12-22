@@ -10,5 +10,7 @@ sealed class FileResult {
 
     data class Copied(val fileCopied: Boolean?) : FileResult()
 
+    data class Pass(val fileCopied: Boolean) : FileResult()
+
     object Error : FileResult()
 }

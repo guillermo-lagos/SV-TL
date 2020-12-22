@@ -47,7 +47,7 @@ class FileVM(private val fileUtil: FileUtil) : ViewModel(), CoroutineScope {
                             copyDatabaseZip(db_file, file_name)
                         }
                         fileResultLiveData.value = FileResult.Copied(destinationFile)
-                    }else fileResultLiveData.value = FileResult.Copied(true)
+                    }else fileResultLiveData.value = FileResult.Pass(true)
 
 
                 } catch (exception: Exception) {
