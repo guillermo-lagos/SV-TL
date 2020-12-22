@@ -1,16 +1,9 @@
 package guillermo.lagos.svtl
 
-import android.annotation.SuppressLint
-import android.app.Dialog
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
-import android.util.Log
-import kotlinx.coroutines.*
 import org.jetbrains.anko.db.MapRowParser
 import org.jetbrains.anko.db.select
-import java.io.*
-import java.util.zip.ZipEntry
-import java.util.zip.ZipInputStream
 
 
 sealed class TLError : Error() {
@@ -81,14 +74,8 @@ class TLSource(context: Context, filePath: String, db_name: String, id: String? 
     }
 
 
-    /*@Throws(RuntimeException::class)*/
     fun Context.openDatabase(db_name: String): SQLiteDatabase {
         val dbFile = getDatabasePath(db_name)
         return SQLiteDatabase.openDatabase(dbFile.path, null, SQLiteDatabase.OPEN_READONLY)
     }
-
-
-
-
-
 }

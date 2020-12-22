@@ -33,10 +33,8 @@ object TLServer : Runnable {
             serverSocket = ServerSocket(port)
             while (isRunning) {
                 val socket = serverSocket?.accept() ?: throw Error()
-                /*Log.e(TAG,"request handled start")*/
                 handle(socket)
                 socket.close()
-               /* Log.e(TAG,"request handled in while")*/
             }
         } catch (e: Exception) {
             Log.e(TAG,e.localizedMessage)
@@ -54,23 +52,19 @@ object TLServer : Runnable {
             var route: String? = null
             reader = socket.getInputStream().reader().buffered()
 
-            // Read HTTP headers and parse out the route.
             do {
                 val line = reader.readLine() ?: ""
                 if (line.startsWith("GET")) {
-                    // the format for route should be {source}/{z}/{x}/{y}
                     route = line.substringAfter("GET /").substringBefore(".")
                     break
                 }
             } while (!line.isEmpty())
 
-            // the source which this request target to
-            val source = sources[route?.substringBefore("/")] ?: return
 
-            // Output stream that we send the response to
+            val source = sources[route?.substringBefore("/")] ?: return
             output = PrintStream(socket.getOutputStream())
 
-            // Prepare the content to send.
+
             if (null == route) {
                 writeServerError(output)
                 return
@@ -81,7 +75,7 @@ object TLServer : Runnable {
                 return
             }
 
-            // Send out the content.
+
             output.apply {
                 println("HTTP/1.0 200 OK")
                 println("Content-Type: " + detectMimeType(source.format))

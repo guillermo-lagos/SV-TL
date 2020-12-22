@@ -22,4 +22,11 @@
         app:mapbox_cameraZoom="18" />
 
 
+    <include
+        android:id="@+id/viewProgressLoading"
+        layout="@layout/view_blocking_loader"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
