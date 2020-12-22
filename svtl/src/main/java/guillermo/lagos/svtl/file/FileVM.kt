@@ -18,6 +18,7 @@ class FileVM(private val fileUtil: FileUtil) : ViewModel(), CoroutineScope {
         get() = Dispatchers.Main + viewModelJob
 
     private val fileResultLiveData = MutableLiveData<FileResult>()
+    val contador_db = FileCount()
 
     fun fileResultLiveData(): LiveData<FileResult> = fileResultLiveData
 
@@ -25,10 +26,12 @@ class FileVM(private val fileUtil: FileUtil) : ViewModel(), CoroutineScope {
         launch {
             fileUtil.apply {
                 try {
-                    fileResultLiveData.value = FileResult.Loading(true)
+                    /*fileResultLiveData.value = FileResult.Loading(true)*/
                     if (validateSize()) deleteDBs()
                     if (hasCorrupt()) deleteDBs()
                     if (!hasCorrupt() && !hasDB()) {
+                        fileResultLiveData.value = FileResult.Pass(false)
+                        contador_db?.apply {if (!isRun()) start((2L * 60000) + 30000) }
                         withContext(Dispatchers.IO) {
                             openOrCreateDatabase(
                                 db_name,
@@ -47,13 +50,14 @@ class FileVM(private val fileUtil: FileUtil) : ViewModel(), CoroutineScope {
                             copyDatabaseZip(db_file, file_name)
                         }
                         fileResultLiveData.value = FileResult.Copied(destinationFile)
+                        contador_db?.apply {if (isRun()) cancel() }
                     }else fileResultLiveData.value = FileResult.Pass(true)
 
 
                 } catch (exception: Exception) {
                     fileResultLiveData.value = FileResult.Error
                 } finally {
-                    fileResultLiveData.value = FileResult.Loading(false)
+                    /*fileResultLiveData.value = FileResult.Loading(false)*/
                 }
             }
         }

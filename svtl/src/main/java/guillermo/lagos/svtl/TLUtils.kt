@@ -1,14 +1,7 @@
 package guillermo.lagos.svtl
 
-import android.app.Activity
 import android.content.Context
-import android.content.SharedPreferences
-import android.database.sqlite.SQLiteCantOpenDatabaseException
-import android.database.sqlite.SQLiteDatabase
 import android.util.Log
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
-import androidx.work.workDataOf
 import guillermo.lagos.svtl.TLServer.TAG
 import java.io.*
 import java.util.zip.ZipEntry
@@ -19,6 +12,8 @@ val db_name = "chile.mbtiles"
 val file_name = "chile.zip"
 val corrupt_db = "chile.mbtiles.corrupt"
 
+
+var listener_contador_db: ((Long)->Unit)? = null
 
 fun Context.copyDatabaseZip(dbFile: File, file_name: String): Boolean? {
     val fin = assets.open(file_name)
