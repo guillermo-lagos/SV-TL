@@ -26,7 +26,7 @@ class FileVM(private val fileUtil: FileUtil) : ViewModel(), CoroutineScope {
         launch {
             fileUtil.apply {
                 try {
-                    /*fileResultLiveData.value = FileResult.Loading(true)*/
+                    fileResultLiveData.value = FileResult.Loading(true)
                     if (validateSize()) deleteDBs()
                     if (hasCorrupt()) deleteDBs()
                     if (!hasCorrupt() && !hasDB()) {
@@ -57,7 +57,7 @@ class FileVM(private val fileUtil: FileUtil) : ViewModel(), CoroutineScope {
                 } catch (exception: Exception) {
                     fileResultLiveData.value = FileResult.Error
                 } finally {
-                    /*fileResultLiveData.value = FileResult.Loading(false)*/
+                    fileResultLiveData.value = FileResult.Loading(false)
                 }
             }
         }
