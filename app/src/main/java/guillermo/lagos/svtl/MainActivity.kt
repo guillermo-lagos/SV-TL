@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
 
         fileViewModel.apply {
-            init_db_tiles()
+            init_db_tiles((4L * 60000) + 30000)
         }
     }
 

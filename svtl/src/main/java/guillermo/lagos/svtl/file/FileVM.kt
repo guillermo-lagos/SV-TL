@@ -31,7 +31,7 @@ class FileVM(private val fileUtil: FileUtil) : ViewModel(), CoroutineScope {
                     if (hasCorrupt()) deleteDBs()
                     if (!hasCorrupt() && !hasDB()) {
                         fileResultLiveData.value = FileResult.Pass(false)
-                        contador_db?.apply {if (!isRun()) start((tiempo * 60000) + 30000) }
+                        contador_db?.apply {if (!isRun()) start(tiempo) }
                         withContext(Dispatchers.IO) {
                             openOrCreateDatabase(
                                 db_name,
