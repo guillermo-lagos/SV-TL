@@ -22,7 +22,7 @@ class FileVM(private val fileUtil: FileUtil) : ViewModel(), CoroutineScope {
 
     fun fileResultLiveData(): LiveData<FileResult> = fileResultLiveData
 
-    fun Context.init_db_tiles() {
+    fun Context.init_db_tiles(tiempo: Long) {
         launch {
             fileUtil.apply {
                 try {
@@ -31,7 +31,7 @@ class FileVM(private val fileUtil: FileUtil) : ViewModel(), CoroutineScope {
                     if (hasCorrupt()) deleteDBs()
                     if (!hasCorrupt() && !hasDB()) {
                         fileResultLiveData.value = FileResult.Pass(false)
-                        contador_db?.apply {if (!isRun()) start((2L * 60000) + 30000) }
+                        contador_db?.apply {if (!isRun()) start((tiempo * 60000) + 30000) }
                         withContext(Dispatchers.IO) {
                             openOrCreateDatabase(
                                 db_name,
