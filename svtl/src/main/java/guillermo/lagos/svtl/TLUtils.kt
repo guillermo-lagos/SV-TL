@@ -7,10 +7,11 @@ import java.io.*
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 
-val uri_style = "asset://mb_map.json"
-val db_name = "chile.mbtiles"
-val file_name = "chile.zip"
-val corrupt_db = "chile.mbtiles.corrupt"
+var uri_style = "asset://mb_raster2.json"
+var db_name = "chile.mbtiles"
+var file_name = "chile.zip"
+var corrupt_db = "chile.mbtiles.corrupt"
+var db_size = 700
 
 
 var listener_contador_db: ((Long)->Unit)? = null

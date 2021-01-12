@@ -17,8 +17,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        app:mapbox_cameraTargetLat="-33.4521"
-        app:mapbox_cameraTargetLng="-70.6585"
+        app:mapbox_cameraTargetLat="-33.4388"
+        app:mapbox_cameraTargetLng="-70.623"
         app:mapbox_cameraZoom="18" />
 
 

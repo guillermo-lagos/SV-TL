@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import guillermo.lagos.svtl.corrupt_db
 import guillermo.lagos.svtl.db_name
+import guillermo.lagos.svtl.db_size
 import java.io.File
 
 class FileUtil {
@@ -20,6 +21,6 @@ class FileUtil {
         val kb = s / 1024
         val mb = (kb / 1024).toInt()
         Log.e("GLAGOS", "TAMAÑO DB: $mb")
-        return mb < 700
+        return mb < db_size
     }
 }
